@@ -7,7 +7,7 @@ public class FirstPersonPlayerController : MonoBehaviour
     //camera/character rotation
     private float xRotation = 0f;
     public float mouseSensitivity = 100f;
-    public Transform camera;
+    public Transform head;
 
     //character movement
     public float movingSpeed = 12f;
@@ -39,12 +39,17 @@ public class FirstPersonPlayerController : MonoBehaviour
 
         //character movement
         Vector3 playerMove = transform.right * playerX + transform.forward * playerZ;
-        controller.Move(playerMove * movingSpeed * Time.deltaTime);
 
-        //rotate character horizontally
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        {
+            controller.Move(playerMove * movingSpeed * Time.deltaTime);
+        }
+
+        //rotate camera horizontally
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        camera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        head.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
         //rotate character vertically
         transform.Rotate(Vector3.up * mouseX);
 
